@@ -89,29 +89,31 @@ void messageHandler()
 {
 	__HAL_UART_DISABLE_IT(&huart1, UART_IT_RXNE);
 	int position = 0;
-	if((position = string_contains((char*)buffer, "GET", buffer_index)) != -1
-	|| (position = string_contains((char*)buffer, "0,CONNECT\r\n", buffer_index)) != -1)
+	if((position = string_contains((char*)buffer, ",CONNECT\r\n", buffer_index)) != -1)
+	{
+		ESP_Clear_Buffer();
+	}else if((position = string_contains((char*)buffer, "GET", buffer_index)) != -1)
 	{
 		sendData();
-	}if((position = string_contains((char*)buffer, "LAMP:OFF,MOTOR:OFF", buffer_index)) != -1)
+	}else if((position = string_contains((char*)buffer, "LAMP:OFF,MOTOR:OFF", buffer_index)) != -1)
 	{
 		lamp_status = 0;
 		motor_status = 0;
 		HAL_GPIO_WritePin(LAMP_GPIO_Port, LAMP_Pin, lamp_status);
 		HAL_GPIO_WritePin(MOTOR_GPIO_Port, MOTOR_Pin, motor_status);
-	}if((position = string_contains((char*)buffer, "LAMP:OFF,MOTOR:ON", buffer_index)) != -1)
+	}else if((position = string_contains((char*)buffer, "LAMP:OFF,MOTOR:ON", buffer_index)) != -1)
 	{
 		lamp_status = 0;
 		motor_status = 1;
 		HAL_GPIO_WritePin(LAMP_GPIO_Port, LAMP_Pin, lamp_status);
 		HAL_GPIO_WritePin(MOTOR_GPIO_Port, MOTOR_Pin, motor_status);
-	}if((position = string_contains((char*)buffer, "LAMP:ON,MOTOR:OFF", buffer_index)) != -1)
+	}else if((position = string_contains((char*)buffer, "LAMP:ON,MOTOR:OFF", buffer_index)) != -1)
 	{
 		lamp_status = 1;
 		motor_status = 0;
 		HAL_GPIO_WritePin(LAMP_GPIO_Port, LAMP_Pin, lamp_status);
 		HAL_GPIO_WritePin(MOTOR_GPIO_Port, MOTOR_Pin, motor_status);
-	}if((position = string_contains((char*)buffer, "LAMP:ON,MOTOR:ON", buffer_index)) != -1)
+	}else if((position = string_contains((char*)buffer, "LAMP:ON,MOTOR:ON", buffer_index)) != -1)
 	{
 		lamp_status = 1;
 		motor_status = 1;
