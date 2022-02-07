@@ -137,13 +137,13 @@ void sendData()//sends data compatible with a browser
 	memset(response, 0, 600);
 
 	if(lamp_status == 0 && motor_status == 0)
-		sprintf(outputString, "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><title>STM32 IoT</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><h1>Lamp: OFF</h1><h1>Motor: OFF</h1></body></html>");
+		sprintf(outputString, "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><title>Moon Lamp</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><h1>Lamp: OFF</h1><h1>Motor: OFF</h1></body></html>");
 	else if(lamp_status == 0 && motor_status == 1)
-		sprintf(outputString, "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><title>STM32 IoT</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><h1>Lamp: OFF</h1><h1>Motor: ON</h1></body></html>");
+		sprintf(outputString, "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><title>Moon Lamp</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><h1>Lamp: OFF</h1><h1>Motor: ON</h1></body></html>");
 	else if(lamp_status == 1 && motor_status == 0)
-		sprintf(outputString, "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><title>STM32 IoT</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><h1>Lamp: ON</h1><h1>Motor: OFF</h1></body></html>");
+		sprintf(outputString, "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><title>Moon Lamp</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><h1>Lamp: ON</h1><h1>Motor: OFF</h1></body></html>");
 	else
-		sprintf(outputString, "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><title>STM32 IoT</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><h1>Lamp: ON</h1><h1>Motor: ON</h1></body></html>");
+		sprintf(outputString, "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><title>Moon Lamp</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><h1>Lamp: ON</h1><h1>Motor: ON</h1></body></html>");
 	sprintf(response, "HTTP/1.1 200 OK\r\nContent-Length: %i\r\nContent-Type: text/html\r\n\r\n%s", strlen(outputString), outputString);
 	sprintf(cipsend, "AT+CIPSEND=0,%i\r\n", strlen(response));
 
