@@ -95,29 +95,53 @@ void messageHandler()
 	}else if((position = string_contains((char*)buffer, "GET", buffer_index)) != -1)
 	{
 		sendData();
-	}else if((position = string_contains((char*)buffer, "LAMP:OFF,MOTOR:OFF", buffer_index)) != -1)
+	}else if((position = string_contains((char*)buffer, "LAMP:OFF,MOTOR:OFF", buffer_index)) != -1
+		  || (position = string_contains((char*)buffer, "LIGHT:OFF,ROTATION:OFF", buffer_index)) != -1)
 	{
 		lamp_status = 0;
 		motor_status = 0;
 		HAL_GPIO_WritePin(LAMP_GPIO_Port, LAMP_Pin, lamp_status);
 		HAL_GPIO_WritePin(MOTOR_GPIO_Port, MOTOR_Pin, motor_status);
-	}else if((position = string_contains((char*)buffer, "LAMP:OFF,MOTOR:ON", buffer_index)) != -1)
+	}else if((position = string_contains((char*)buffer, "LAMP:OFF,MOTOR:ON", buffer_index)) != -1
+		  || (position = string_contains((char*)buffer, "LIGHT:OFF,ROTATION:ON", buffer_index)) != -1)
 	{
 		lamp_status = 0;
 		motor_status = 1;
 		HAL_GPIO_WritePin(LAMP_GPIO_Port, LAMP_Pin, lamp_status);
 		HAL_GPIO_WritePin(MOTOR_GPIO_Port, MOTOR_Pin, motor_status);
-	}else if((position = string_contains((char*)buffer, "LAMP:ON,MOTOR:OFF", buffer_index)) != -1)
+	}else if((position = string_contains((char*)buffer, "LAMP:ON,MOTOR:OFF", buffer_index)) != -1
+		  || (position = string_contains((char*)buffer, "LIGHT:ON,ROTATION:OFF", buffer_index)) != -1)
 	{
 		lamp_status = 1;
 		motor_status = 0;
 		HAL_GPIO_WritePin(LAMP_GPIO_Port, LAMP_Pin, lamp_status);
 		HAL_GPIO_WritePin(MOTOR_GPIO_Port, MOTOR_Pin, motor_status);
-	}else if((position = string_contains((char*)buffer, "LAMP:ON,MOTOR:ON", buffer_index)) != -1)
+	}else if((position = string_contains((char*)buffer, "LAMP:ON,MOTOR:ON", buffer_index)) != -1
+		  || (position = string_contains((char*)buffer, "LIGHT:ON,ROTATION:ON", buffer_index)) != -1)
 	{
 		lamp_status = 1;
 		motor_status = 1;
 		HAL_GPIO_WritePin(LAMP_GPIO_Port, LAMP_Pin, lamp_status);
+		HAL_GPIO_WritePin(MOTOR_GPIO_Port, MOTOR_Pin, motor_status);
+	}else if((position = string_contains((char*)buffer, "LAMP:ON", buffer_index)) != -1
+		  || (position = string_contains((char*)buffer, "LIGHT:ON", buffer_index)) != -1)
+	{
+		lamp_status = 1;
+		HAL_GPIO_WritePin(LAMP_GPIO_Port, LAMP_Pin, lamp_status);
+	}else if((position = string_contains((char*)buffer, "LAMP:OFF", buffer_index)) != -1
+		  || (position = string_contains((char*)buffer, "LIGHT:OFF", buffer_index)) != -1)
+	{
+		lamp_status = 0;
+		HAL_GPIO_WritePin(LAMP_GPIO_Port, LAMP_Pin, lamp_status);
+	}else if((position = string_contains((char*)buffer, "MOTOR:ON", buffer_index)) != -1
+		  || (position = string_contains((char*)buffer, "ROTATION:ON", buffer_index)) != -1)
+	{
+		motor_status = 1;
+		HAL_GPIO_WritePin(MOTOR_GPIO_Port, MOTOR_Pin, motor_status);
+	}else if((position = string_contains((char*)buffer, "MOTOR:OFF", buffer_index)) != -1
+		  || (position = string_contains((char*)buffer, "ROTATION:OFF", buffer_index)) != -1)
+	{
+		motor_status = 0;
 		HAL_GPIO_WritePin(MOTOR_GPIO_Port, MOTOR_Pin, motor_status);
 	}else if(string_contains((char*)buffer, "+CWJAP:", buffer_index) != -1
 			&& (string_contains((char*)buffer, "FAIL", buffer_index) != -1
