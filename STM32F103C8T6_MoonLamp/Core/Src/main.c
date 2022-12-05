@@ -124,7 +124,7 @@ int main(void)
 		  timeout = 0;
 	  }
 
-	  if(seconds > 86400)// 24 hours
+	  if(seconds > 604800)// 7 days
 		  NVIC_SystemReset();
 
 	  if(lamp_int_flag)
