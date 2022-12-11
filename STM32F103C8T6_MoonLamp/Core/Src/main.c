@@ -119,9 +119,18 @@ int main(void)
 
 	  if(messageHandlerFlag)
 	  {
+		  IWDG->KR = 0xAAAA;//Reset WatchDog
 		  messageHandler();
 		  messageHandlerFlag = 0;
 		  timeout = 0;
+		  no_activity_counter = 0;
+	  }
+
+	  if(no_activity_counter > 60)
+	  {
+		  IWDG->KR = 0xAAAA;//Reset WatchDog
+		  HAL_UART_Transmit(&huart1, (uint8_t*)"AT+CWJAP?\r\n", strlen("AT+CWJAP?\r\n"), 100);
+		  HAL_Delay(900);
 	  }
 
 	  if(seconds > 604800)// 7 days
@@ -130,6 +139,7 @@ int main(void)
 	  if(lamp_int_flag)
 	  {
 		  HAL_Delay(100);
+		  IWDG->KR = 0xAAAA;//Reset WatchDog
 		  if(HAL_GPIO_ReadPin(LAMP_INTERRUPT1_GPIO_Port, LAMP_INTERRUPT1_Pin))
 		  {
 				lamp_status = !lamp_status;
@@ -142,6 +152,7 @@ int main(void)
 	  if(motor_int_flag)
 	  {
 		  HAL_Delay(100);
+		  IWDG->KR = 0xAAAA;//Reset WatchDog
 		  if(HAL_GPIO_ReadPin(MOTOR_INTERRUPT2_GPIO_Port, MOTOR_INTERRUPT2_Pin))
 		  {
 				motor_status = !motor_status;

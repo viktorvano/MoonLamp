@@ -19,7 +19,7 @@ extern UART_HandleTypeDef huart1;
 
 extern uint32_t seconds;
 extern uint8_t buffer[2000];
-extern uint16_t buffer_index, timeout, messageHandlerFlag;
+extern uint16_t buffer_index, timeout, messageHandlerFlag, no_activity_counter;
 extern uint8_t lamp_status, motor_status;
 extern uint8_t lamp_int_flag, motor_int_flag;
 

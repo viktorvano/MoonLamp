@@ -10,7 +10,7 @@
 
 uint32_t seconds = 0;
 uint8_t buffer[2000];
-uint16_t buffer_index = 0, timeout = 0, messageHandlerFlag = 0;
+uint16_t buffer_index = 0, timeout = 0, messageHandlerFlag = 0, no_activity_counter = 0;
 uint8_t lamp_status = 0, motor_status = 0;
 uint8_t lamp_int_flag = 0, motor_int_flag = 0;
 
