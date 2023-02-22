@@ -148,6 +148,9 @@ void messageHandler()
 			|| string_contains((char*)buffer, "DISCONNECT", buffer_index) != -1))
 	{
 		HAL_UART_Transmit(&huart1, (uint8_t*)WiFi_Credentials, strlen(WiFi_Credentials), 100);
+	}else if(string_contains((char*)buffer, "boot mode:", buffer_index) != -1)
+	{
+		ESP_Server_Init();
 	}
 	ESP_Clear_Buffer();
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
