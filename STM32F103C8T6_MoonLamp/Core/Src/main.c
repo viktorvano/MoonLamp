@@ -22,6 +22,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "ESP8266.h"
+#include <mqttclient.h>
+#include "MQTTPacket.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -131,6 +133,7 @@ int main(void)
 		  IWDG->KR = 0xAAAA;//Reset WatchDog
 		  HAL_UART_Transmit(&huart1, (uint8_t*)"AT+CWJAP?\r\n", strlen("AT+CWJAP?\r\n"), 100);
 		  HAL_Delay(900);
+		  update_flag = 1;
 	  }
 
 	  if(seconds > 604800)// 7 days
@@ -147,6 +150,7 @@ int main(void)
 		  }
 		  HAL_Delay(900);
 		  lamp_int_flag = 0;
+		  update_flag = 1;
 	  }
 
 	  if(motor_int_flag)
@@ -160,6 +164,13 @@ int main(void)
 		  }
 		  HAL_Delay(900);
 		  motor_int_flag = 0;
+		  update_flag = 1;
+	  }
+
+	  if(esp_state == ESP_Connected && update_flag)
+	  {
+			mqtt_PublishRoutine();
+			update_flag = 0;
 	  }
   }
   /* USER CODE END 3 */
