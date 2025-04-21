@@ -159,7 +159,7 @@ void messageHandler()
 			|| string_contains((char*)buffer, "WIFI DISCONNECT", buffer_index) != -1)
 			&& !(string_contains((char*)buffer, "WIFI CONNECTED", buffer_index) != -1))
 	{
-		HAL_UART_Transmit(&huart2, (uint8_t*)WiFi_Credentials, strlen(WiFi_Credentials), 100);
+		HAL_UART_Transmit(&huart1, (uint8_t*)WiFi_Credentials, strlen(WiFi_Credentials), 100);
 		esp_state = ESP_Disconnected;
 	}else if(string_contains((char*)buffer, "WIFI CONNECTED", buffer_index) != -1)
 	{
