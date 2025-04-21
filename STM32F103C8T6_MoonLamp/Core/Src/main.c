@@ -128,12 +128,18 @@ int main(void)
 		  no_activity_counter = 0;
 	  }
 
-	  if(no_activity_counter > 60)
+	  if(no_activity_counter > 60
+		&& esp_state == ESP_Connected)
 	  {
 		  IWDG->KR = 0xAAAA;//Reset WatchDog
 		  HAL_UART_Transmit(&huart1, (uint8_t*)"AT+CWJAP?\r\n", strlen("AT+CWJAP?\r\n"), 100);
+		  HAL_Delay(500);
+		  esp_state = ESP_Disconnected;//until message handler confirms
+	  }else if(esp_state == ESP_Disconnected
+			  && no_activity_counter > 65)
+	  {
+		  ESP_Server_Init();
 		  HAL_Delay(900);
-		  update_flag = 1;
 	  }
 
 	  if(seconds > 604800)// 7 days
@@ -171,6 +177,13 @@ int main(void)
 	  {
 			mqtt_PublishRoutine();
 			update_flag = 0;
+			no_activity_counter = 0;
+	  }else if(esp_state == ESP_Disconnected
+			  && update_flag
+			  && no_activity_counter > 5)
+	  {
+		  ESP_Server_Init();
+		  HAL_Delay(900);
 	  }
   }
   /* USER CODE END 3 */

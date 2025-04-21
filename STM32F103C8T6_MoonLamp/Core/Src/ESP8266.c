@@ -94,7 +94,7 @@ void messageHandler()
 	if((position = string_contains((char*)buffer, ",CONNECT\r\n", buffer_index)) != -1)
 	{
 		ESP_Clear_Buffer();
-	}else if((position = string_contains((char*)buffer, "GET", buffer_index)) != -1)
+	}else if((position = string_contains((char*)buffer, "GET", buffer_index)) != -1)//send Web page HTML code
 	{
 		sendData();
 	}else if((position = string_contains((char*)buffer, "LAMP:OFF,MOTOR:OFF", buffer_index)) != -1
@@ -155,10 +155,11 @@ void messageHandler()
 		HAL_GPIO_WritePin(MOTOR_GPIO_Port, MOTOR_Pin, motor_status);
 	}else if(string_contains((char*)buffer, "CWJAP", buffer_index) != -1
 			&& (string_contains((char*)buffer, "FAIL", buffer_index) != -1
+			|| string_contains((char*)buffer, "No AP", buffer_index) != -1
 			|| string_contains((char*)buffer, "WIFI DISCONNECT", buffer_index) != -1)
 			&& !(string_contains((char*)buffer, "WIFI CONNECTED", buffer_index) != -1))
 	{
-		HAL_UART_Transmit(&huart1, (uint8_t*)WiFi_Credentials, strlen(WiFi_Credentials), 100);
+		HAL_UART_Transmit(&huart2, (uint8_t*)WiFi_Credentials, strlen(WiFi_Credentials), 100);
 		esp_state = ESP_Disconnected;
 	}else if(string_contains((char*)buffer, "WIFI CONNECTED", buffer_index) != -1)
 	{
@@ -168,6 +169,12 @@ void messageHandler()
 	{
 		esp_state = ESP_Disconnected;
 		ESP_Server_Init();
+	}else if(string_contains((char*)buffer, "CWJAP", buffer_index) != -1//"AT+CWJAP?\r\n"
+			&& (string_contains((char*)buffer, "OK", buffer_index) != -1)
+			&& (string_contains((char*)buffer, "No AP", buffer_index) == -1))// does not contain "No AP"
+	{
+		esp_state = ESP_Connected;
+		update_flag = 1;
 	}
 	ESP_Clear_Buffer();
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
